@@ -1,6 +1,6 @@
 
 from src.reminders import Reminder
-from src.reminders.messages import AttendanceMessage, GoogleMeetMessage, PauseMessage
+from src.reminders.messages import Message, AttendanceMessage, GoogleMeetMessage, PauseMessage
 
 
 class Routes:
@@ -33,5 +33,8 @@ class Routes:
 
         # ADD MORE REMINDERS HERE
         # -----------------------
+
+        # Basic reminder example:
+        # Reminder("A simple reminder", 'mon-fri', 16, 0, [Message(("This is reminder with a simple message",))])
 
         Reminder.start()
