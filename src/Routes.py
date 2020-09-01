@@ -5,11 +5,13 @@ from src.reminders.messages import AttendanceMessage, GoogleMeetMessage, PauseMe
 
 class Routes:
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """Routes object: used to initialize the reminders and their content."""
         pass
 
     @staticmethod
-    def initialize():
+    def initialize() -> None:
+        """Initialize the reminders and thir content."""
 
         # Morning reunions attendances
         Reminder("Pointage 9h - Becode", 'tue, wed', 8, 50, [AttendanceMessage()])
@@ -28,5 +30,8 @@ class Routes:
         Reminder("Débriefing 16h45 - Home", 'mon, thu', 16, 35, [GoogleMeetMessage("débriefing", 10)])
         Reminder("Kahoot 16h40 - Home", 'fri', 16, 30, [GoogleMeetMessage("kahoot", 10)])
         Reminder("Pointage 17h00 - All", 'mon-fri', 17, 00, [AttendanceMessage()])
+
+        # ADD MORE REMINDERS HERE
+        # -----------------------
 
         Reminder.start()

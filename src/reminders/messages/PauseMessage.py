@@ -9,12 +9,18 @@ messages: Messages = (
 
 class PauseMessage(Message):
 
-    def __init__(self, delay: int) -> None:
-        self.delay = delay
+    def __init__(self, duration: int) -> None:
+        """
+        Pause message: used in a reminder that need to reminds to take a break.
+
+        :param duration: The duration of the pause
+        """
+
+        self.duration = duration
         Message.__init__(self, messages)
 
     def get_content(self):
 
         # Append the event variables (name, delay) to the message
         message = super().get_content()[0]
-        return message % self.delay, self.card
+        return message % self.duration, self.card

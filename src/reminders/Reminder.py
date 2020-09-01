@@ -7,25 +7,42 @@ from datetime import datetime
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 
+# Initialize the scheduler and setup the timezone.
 scheduler = BlockingScheduler()
 tz = timezone('Europe/Amsterdam')
 
 
 class Link(NamedTuple):
+    """
+    Link data structure. A "link" is a bunch of text to place between
+    two sentences to "link" them.
+    """
+
     message: str
     needPoint: bool  # True if the previous sentence need a point.
     needUppercase: bool  # True if the following sentence need an uppercase.
 
 
+# List of linkers (text that link two sentences together)
+linkers: Tuple = (
+    Link(message="", needPoint=True, needUppercase=True),
+    Link(message=". Et", needPoint=False, needUppercase=False)
+)
+
+
 class Reminder:
 
-    # List of linkers (text that link two sentences together)
-    linkers: Tuple = (
-        Link(message="", needPoint=True, needUppercase=True),
-        Link(message=". Et", needPoint=False, needUppercase=False)
-    )
-
     def __init__(self, name: str, days: str, hour: int, minute: int, sources: list):
+        """
+        Core of this Bot: Create a scheduled element that will send a POST request
+        to the Discord webhook.
+
+        :param name: The name of the reminder. For clarity only.
+        :param days: Days of the week when this reminder has to trigger.
+        :param hour: Hour of the day when this reminder has to trigger.
+        :param minute: Minutes of when this reminder has to trigger.
+        :param sources: List of Message object containing the text and card used to generate a Reminder.
+        """
         self.sources = self.get_message_card_from_source(sources)
         self.message, self.card = self.format_message_card()
 
@@ -33,9 +50,9 @@ class Reminder:
 
     @staticmethod
     def get_linker() -> Link:
-        """Return a text to link to phrases."""
+        """Return a randomly chooser text to link to tenses."""
 
-        return random.choice(Reminder.linkers)
+        return random.choice(linkers)
 
     @staticmethod
     def get_message_card_from_source(sources: list) -> list:
@@ -48,8 +65,13 @@ class Reminder:
         return list(zip(entry.get_content() for entry in sources))
 
     def format_message_card(self) -> Tuple[str, tuple]:
+        """
+        Create an sanitize a message and a card to be send to the webhook.
 
-        # Retrieve the linker and the first message
+        :return: Tuple (message: str, Card)
+        """
+
+        # Retrieve the linker and the first message.
         linker: Link = self.get_linker()
         messages = [self.format_uppercase(self.sources[0][0][0])]
 
@@ -95,9 +117,9 @@ class Reminder:
     def __initialize(self, name: str, days: str, hour: int, minute: int) -> None:
         """
         The core of the Reminder class: This function create a scheduler to
-        post self.message and self.card.
-        :type name: str
+        post self.message and self.card on Discord via a WebRequest.
 
+        Used internally only. Parameters are the same than this class.
         """
 
         @scheduler.scheduled_job('cron', day_of_week=days, hour=hour, minute=minute, timezone=tz)
@@ -112,4 +134,5 @@ class Reminder:
 
     @staticmethod
     def start():
+        """Start all schedulers."""
         scheduler.start()
