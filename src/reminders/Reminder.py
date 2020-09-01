@@ -14,7 +14,7 @@ tz = timezone('Europe/Amsterdam')
 
 class Link(NamedTuple):
     """
-    Link data structure. A "link" is a bunch of text to place between
+    A "Link" is a bunch of text to place between
     two sentences to "link" them.
     """
 

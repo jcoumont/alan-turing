@@ -6,17 +6,17 @@ URL = "https://meet.google.com/hfe-twue-vsb"
 
 # Google Meet card
 card = Card(
-        title="Google Meet",
-        url=URL,
-        description=f"Participez à la [visioconférence]({URL}) des Turings sur Google Meet.",
-        color=3510917,
-        thumbnail={"url": "https://i.imgur.com/ehlNUYU.png"}
+    title="Google Meet",
+    url=URL,
+    description=f"Votre coach préféré vous invite à participer à la [visioconférence]({URL}) des Turings sur Google Meet.",
+    color=3510917,
+    thumbnail={"url": "https://i.imgur.com/ehlNUYU.png"}
 )
 
 # Google Meet messages
 messages: Messages = (
-        f"la %s démarre dans %s minutes sur [Google Meet]({URL})",
-        f"%s dans %s minutes sur [Google Meet]({URL})"
+    f"%s démarre dans **%s minutes** sur [Google Meet]({URL})",
+    f"%s dans **%s minutes** sur [Google Meet]({URL})"
 )
 
 

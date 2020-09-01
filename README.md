@@ -10,3 +10,7 @@ messages to remember the channels' members to do important things like
 their appointment, going to Google Meet, etc.
 
 *Alland Turing* use a **set of pre-written tenses** to generate a random message.
+
+## TO DO:
+- Ajouter la différence masculin/féminin pour les noms des évènements
+- Permettre au bot de choisir le déterminant approprié lors de l'emploi de noms d'évènements.

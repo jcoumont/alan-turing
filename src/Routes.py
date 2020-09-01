@@ -11,7 +11,7 @@ class Routes:
 
     @staticmethod
     def initialize() -> None:
-        """Initialize the reminders and thir content."""
+        """Initialize the reminders and their content."""
 
         # Morning reunions attendances
         Reminder("Pointage 9h - Becode", 'tue, wed', 8, 50, [AttendanceMessage()])
