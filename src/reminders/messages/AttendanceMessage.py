@@ -27,5 +27,4 @@ class AttendanceMessage(Message):
         """
         Attendance message: used in a reminder that need to reminds to go to my.becode.org
         """
-
         Message.__init__(self, messages, card, URL)

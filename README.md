@@ -5,7 +5,7 @@ A Discord bot to remind you important moments of the day.
 ![Alan Turing Example](https://i.imgur.com/Aa5HDcX.png)
 
 ## How to add reminders ?
-1. Go to **src** > **Routes.py**
+1. Go to **src** > **Calendar.py**
 2. Copy an existing reminder, or create a basic one.
 
 **Example**:

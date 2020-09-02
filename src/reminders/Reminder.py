@@ -1,6 +1,7 @@
 
 from src.web import WebRequest
 import random
+from src.storage import Database
 from pytz import timezone
 from typing import NamedTuple, Tuple
 from datetime import datetime
@@ -32,7 +33,7 @@ linkers: Tuple = (
 
 class Reminder:
 
-    def __init__(self, name: str, days: str, hour: int, minute: int, sources: list):
+    def __init__(self, name: str, days: str, hour: int, minute: int, mentions: bool, sources: list):
         """
         Core of this Bot: Create a scheduled element that will send a POST request
         to the Discord webhook.
@@ -41,8 +42,12 @@ class Reminder:
         :param days: Days of the week when this reminder has to trigger.
         :param hour: Hour of the day when this reminder has to trigger.
         :param minute: Minutes of when this reminder has to trigger.
+        :param mentions: True if this reminder has to mentions the members.
         :param sources: List of Message object containing the text and card used to generate a Reminder.
         """
+        self.db = Database()
+        self.mentions = mentions
+
         self.sources = self.get_message_card_from_source(sources)
         self.message, self.card = self.format_message_card()
 
@@ -114,6 +119,16 @@ class Reminder:
 
         return f"{text}."
 
+    def add_mentions(self, text: str) -> str:
+        users = self.db.get_users_to_mention()
+
+        # Set users to empty string if the list is empty
+        if len(users) == 0:
+            users = ""
+
+        # Append the users to mention
+        return "".join([f"{text} "] + users)
+
     def __initialize(self, name: str, days: str, hour: int, minute: int) -> None:
         """
         The core of the Reminder class: This function create a scheduler to
@@ -125,9 +140,12 @@ class Reminder:
         @scheduler.scheduled_job('cron', day_of_week=days, hour=hour, minute=minute, timezone=tz)
         def job():
 
+            # Add the mentions and send the message
+            message = self.add_mentions(self.message)
+            WebRequest(message, self.card).send()
+
             # Job triggered
             print(f"[!] Job triggered: {datetime.now()} - {name}.")
-            WebRequest(self.message, self.card).send()
 
         # Job registered
         print(f"[+] Job scheduled: {days} @ {hour}h{minute} - {name}.")

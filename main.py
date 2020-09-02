@@ -1,10 +1,11 @@
 
-from src import Routes
+from src import Calendar, Commands
 
 if __name__ == "__main__":
 
-    # Load and init the reminders.
-    Routes().initialize()
+    print("[i] Alan Turing Bot started !")
+    Calendar().start()  # Start the Reminders
+    Commands().start()  # Start the discord bot
 
 
 
