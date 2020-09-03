@@ -12,7 +12,6 @@ class Database:
         """Small database used to store if a user want to be notified or not."""
 
         self.db = self.__initialize_db()
-        print(self.db)
 
     def update(self, user: str, notification: bool) -> None:
         """Update the desired user with the given notification status."""
