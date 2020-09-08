@@ -1,15 +1,10 @@
 
-from src.reminders.messages import Message, Messages, Card
-
-messages: Messages = (
-    f"c'est l'heure de la **pause** ! On se revoit dans **%s minutes**",
-    f"une **pause** de plus, quelle chance ! On se revoit dans **%s minutes**",
-    f"*Pause* ! Vous avez **%s minutes**. A tout de suite"
-    f"Saviez-vous que j'ai initialement été créé pour vous remémorer les pauses ? C'est donc **la pause** ! A dans **15 minutes**"
-)
+from src.reminders.messages import Message
 
 
 class PauseMessage(Message):
+
+    message = f"c'est l'heure de la **pause** ! On se revoit dans **%s minutes**"
 
     def __init__(self, duration: int) -> None:
         """
@@ -17,12 +12,12 @@ class PauseMessage(Message):
 
         :param duration: The duration of the pause
         """
+        self.name = "pause"
 
         self.duration = duration
-        Message.__init__(self, messages)
+        super().__init__(PauseMessage.message)
 
-    def get_content(self):
+    def get_message(self) -> str:
 
         # Append the event variables (name, delay) to the message
-        message = super().get_content()[0]
-        return message % self.duration, self.card
+        return self.message % self.duration
