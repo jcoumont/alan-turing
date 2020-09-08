@@ -1,5 +1,6 @@
 
-from src.web import WebRequest
+from src import globals
+
 import time
 import random
 from discord import Embed, Message
@@ -55,6 +56,7 @@ class Reminder:
         self.client = client
         self.mentions = mentions
 
+        self.attendance = False
         self.message = self.format_message(self.retrieve_messages(messages))
         self.card = self.create_card(self.retrieve_raw_card(messages))
 
@@ -76,13 +78,19 @@ class Reminder:
 
         return message_list
 
-    @staticmethod
-    def retrieve_raw_card(messages):
+    def retrieve_raw_card(self, messages):
         """Retrieve and return the card from the messages."""
+        meet = False
 
         for message in messages:
+            if message.name == "attendance":
+                self.attendance = True
+
             if message.name == "googlemeet":
-                return message.get_card()
+                meet = message.get_card()
+
+        if meet:
+            return meet
 
         return messages[0].get_card()
 
@@ -173,6 +181,7 @@ class Reminder:
 
         @scheduler.scheduled_job('cron', day_of_week=days, hour=hour, minute=minute, timezone=tz)
         async def job():
+            nonlocal self
 
             channel = self.client.get_channel(CHANNEL_ID)
             async with channel.typing():
@@ -184,7 +193,10 @@ class Reminder:
 
                 # Send through Discord # https://gist.github.com/Vexs/629488c4bb4126ad2a9909309ed6bd71
                 message: Message = await channel.send(text, embed=self.card)
-                await message.add_reaction(emoji="\u2705")
+
+                if self.attendance:
+                    await message.add_reaction(emoji="\u2705")
+                    globals.last_message = message.id
 
             # Job triggered
             print(f"[!] Job triggered: {datetime.now()} - {name}.")

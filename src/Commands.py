@@ -1,11 +1,15 @@
 
+from src import globals
 from src.reminders import Reminder
 from src.reminders.messages import AttendanceMessage, GoogleMeetMessage, PauseMessage
 from src.storage import Database
+from typing import Union
 from discord.ext.commands import Bot
+from discord import Reaction, User, Member
 from os import environ
 
 DISCORD_TOKEN = environ.get('DISCORD_TOKEN')
+last_message = None
 
 
 class Commands:
@@ -46,20 +50,24 @@ class Commands:
             print(f"[!] Mention added: {author} will stop receiving mentions on reminders.")
             await context.send(f"{author} L'oiseau prend son envol ! Je ne te mentionnerai plus les pointages.")
 
+        @self.client.event
+        async def on_reaction_add(reaction: Reaction, user: Union[User, Member]):
+
+            if str(reaction.emoji) == "\u2705" \
+                    and reaction.message.id == globals.last_message \
+                    and not user.bot:
+
+                print(user.id)
+
         self.initialize_reminders()
 
     def initialize_reminders(self) -> None:
 
         clt = self.client
 
-        Reminder(clt, "Pointage 9h - Becode", 'mon-sun', 22, 49, True, [AttendanceMessage()])
-        Reminder(clt, "Pointage 9h - Becode", 'mon-sun', 22, 50, True, [AttendanceMessage()])
-        Reminder(clt, "Pointage 9h - Becode", 'mon-sun', 22, 51, True, [AttendanceMessage()])
-        Reminder(clt, "Pointage 9h - Becode", 'mon-sun', 22, 52, True, [AttendanceMessage()])
-
         # Morning reunions attendances
-        Reminder(clt, "Pointage 9h - Becode", 'tue, wed', 8, 50, True, [AttendanceMessage()])
-        Reminder(clt, "Pointage 9h - Home", 'mon, thu, fri', 8, 50, True, [GoogleMeetMessage("réunion", 10), AttendanceMessage()])
+        Reminder(clt, "Pointage 9h - Becode", 'tue, wed, thu', 8, 50, True, [AttendanceMessage()])
+        Reminder(clt, "Pointage 9h - Home", 'mon, fri', 8, 50, True, [GoogleMeetMessage("réunion", 10), AttendanceMessage()])
 
         # Pauses
         Reminder(clt, "Pause 11h - All", 'mon-fri', 11, 0, False, [PauseMessage(15)])
@@ -67,8 +75,8 @@ class Commands:
 
         # Mid-day attendances
         Reminder(clt, "Pointage 12h30 - All", 'mon-fri', 12, 30, True, [AttendanceMessage()])
-        Reminder(clt, "Pointage 13h30 - Becode", 'tue, wed', 13, 20, True, [AttendanceMessage()])
-        Reminder(clt, "Pointage 13h30 - Home", 'mon, thu, fri', 13, 20, True, [GoogleMeetMessage("veille", 10), AttendanceMessage()])
+        Reminder(clt, "Pointage 13h30 - Becode", 'tue, wed, thu', 13, 20, True, [AttendanceMessage()])
+        Reminder(clt, "Pointage 13h30 - Home", 'mon, fri', 13, 20, True, [GoogleMeetMessage("veille", 10), AttendanceMessage()])
 
         # Evening reunions and attendances
         Reminder(clt, "Débriefing 16h45 - Home", 'mon, thu', 16, 35, False, [GoogleMeetMessage("débriefing", 10)])

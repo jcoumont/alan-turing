@@ -1,5 +1,5 @@
 
-from src import Calendar, Commands
+from src import Commands
 
 if __name__ == "__main__":
 
