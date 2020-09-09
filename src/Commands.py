@@ -118,8 +118,8 @@ class Commands:
         Reminder(clt, "Kahoot 16h40 - Home", 'fri', 16, 30, False, [GoogleMeetMessage("kahoot", 10)])
 
         # Evening attendances
-        Reminder(clt, "Pointage 17h00 - Becode", 'mon-fri', 17, 00, True, [AttendanceMessage(Period.EVENING, False)])
-        Reminder(clt, "Pointage 17h00 - Home", 'mon-fri', 17, 00, True, [AttendanceMessage(Period.EVENING, True)])
+        Reminder(clt, "Pointage 17h00 - Becode", 'tue, wed, thu', 17, 00, True, [AttendanceMessage(Period.EVENING, False)])
+        Reminder(clt, "Pointage 17h00 - Home", 'mon, fri', 17, 00, True, [AttendanceMessage(Period.EVENING, True)])
 
     def start(self) -> None:
         Reminder.start()
