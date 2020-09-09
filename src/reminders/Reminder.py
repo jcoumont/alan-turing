@@ -11,8 +11,9 @@ from src.reminders.messages import Message
 from datetime import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from discord.ext.commands import Bot
+from os import environ
 
-CHANNEL_ID = 746109889104838817
+CHANNEL_ID = int(environ.get('DISCORD_CHANNEL'))
 
 
 # Initialize the scheduler and setup the timezone.
