@@ -6,7 +6,7 @@ import random
 from discord import Embed, Message
 from src.storage import Database
 from pytz import timezone
-from typing import NamedTuple, Tuple, List
+from typing import NamedTuple, Tuple, List, Union
 from src.reminders.messages import Message
 from datetime import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -57,7 +57,7 @@ class Reminder:
         self.client = client
         self.mentions = mentions
 
-        self.attendance = False
+        self.attendance: Union[None, tuple] = None
         self.message = self.format_message(self.retrieve_messages(messages))
         self.card = self.create_card(self.retrieve_raw_card(messages))
 
@@ -85,7 +85,7 @@ class Reminder:
 
         for message in messages:
             if message.name == "attendance":
-                self.attendance = True
+                self.attendance = message.get_attendance_details()
 
             if message.name == "googlemeet":
                 meet = message.get_card()
@@ -195,9 +195,12 @@ class Reminder:
                 # Send through Discord # https://gist.github.com/Vexs/629488c4bb4126ad2a9909309ed6bd71
                 message: Message = await channel.send(text, embed=self.card)
 
+                # Save the attendance details
                 if self.attendance:
                     await message.add_reaction(emoji="\u2705")
+
                     globals.last_message = message.id
+                    globals.last_attendance = self.attendance
 
             # Job triggered
             print(f"[!] Job triggered: {datetime.now()} - {name}.")
