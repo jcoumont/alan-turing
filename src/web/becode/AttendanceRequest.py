@@ -38,4 +38,4 @@ class AttendanceRequest:
         self.header = {"Authorization": f"Bearer {token}"}
 
     def send(self):
-        response = requests.post(url=URL, data=self.data, header=self.header)
+        response = requests.post(url=URL, data=self.data, headers=self.header)
