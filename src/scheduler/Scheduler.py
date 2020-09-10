@@ -10,7 +10,6 @@ class Scheduler:
         pass
 
     def initialize(self):
-        Reminder("Pointage 9h - Becode", 'fri', 0, 34, True, [AttendanceMessage(Period.MORNING, False)])
 
         # Morning reunions and attendances
         Reminder("Pointage 9h - Becode", 'tue, wed, thu', 8, 50, True, [AttendanceMessage(Period.MORNING, False)])
