@@ -110,7 +110,7 @@ class Commands:
         Reminder(clt, "Pointage 12h30 - Home", 'mon, fri', 12, 30, True, [AttendanceMessage(Period.LUNCH, "true")])
 
         # Noon attendances
-        Reminder(clt, "Pointage 13h30 - Becode", 'tue, wed, thu', 13, 20, True, [AttendanceMessage(Period.NOON, "false")])
+        Reminder(clt, "Pointage 13h30 - Becode", 'tue, wed, thu', 13, 29, True, [AttendanceMessage(Period.NOON, "false")])
         Reminder(clt, "Pointage 13h30 - Home", 'mon, fri', 13, 20, True, [GoogleMeetMessage("veille", 10), AttendanceMessage(Period.NOON, "true")])
 
         # Evening reunions
