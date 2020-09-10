@@ -114,7 +114,7 @@ class Commands:
         Reminder(clt, "Pointage 13h30 - Home", 'mon, fri', 13, 20, True, [GoogleMeetMessage("veille", 10), AttendanceMessage(Period.NOON, True)])
 
         # Evening reunions
-        Reminder(clt, "Débriefing 16h45 - Home", 'mon, thu', 16, 35, False, [GoogleMeetMessage("débriefing", 10)])
+        Reminder(clt, "Débriefing 16h45 - Home", 'mon', 16, 35, False, [GoogleMeetMessage("débriefing", 10)])
         Reminder(clt, "Kahoot 16h40 - Home", 'fri', 16, 30, False, [GoogleMeetMessage("kahoot", 10)])
 
         # Evening attendances
