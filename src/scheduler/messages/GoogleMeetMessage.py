@@ -1,5 +1,5 @@
 
-from src.reminders.messages import Message, Card
+from src.scheduler.messages import Message, Card
 
 # Google meet URL
 URL = "https://meet.google.com/hfe-twue-vsb"

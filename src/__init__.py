@@ -1,3 +1,4 @@
 
-from src.Calendar import Calendar
-from src.Commands import Commands
+from src.Database import Database
+from src.config import config
+from src.Bot import Bot

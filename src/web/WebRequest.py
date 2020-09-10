@@ -1,10 +1,9 @@
 
+from src import config
+
 import requests
 from os import environ
 from typing import NamedTuple
-
-# Load environment variables
-URL = environ.get('WEBHOOK')
 
 
 class WebRequest:
@@ -46,4 +45,4 @@ class WebRequest:
     def send(self):
         """Execute the request."""
 
-        requests.post(URL, json=self.json)
+        requests.post(config.WEBHOOK, json=self.json)

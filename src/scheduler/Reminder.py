@@ -1,22 +1,18 @@
 
-from src import globals
+from src import config
+from src.scheduler.messages import Card
 
 import time
 import random
 from discord import Embed, Message
-from src.storage import Database
 from pytz import timezone
 from typing import NamedTuple, Tuple, List, Union
-from src.reminders.messages import Message
+from src.scheduler.messages import Message
 from datetime import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from discord.ext.commands import Bot
-from os import environ
-
-CHANNEL_ID = int(environ.get('DISCORD_CHANNEL'))
 
 
-# Initialize the scheduler and setup the timezone.
+# Initialize apscheduler and setup the timezone.
 scheduler = AsyncIOScheduler()
 tz = timezone('Europe/Brussels')
 
@@ -41,7 +37,7 @@ linkers: Tuple = (
 
 class Reminder:
 
-    def __init__(self, client: Bot, name: str, days: str, hour: int, minute: int, mentions: bool, messages: List[Message]):
+    def __init__(self, name: str, days: str, hour: int, minute: int, mentions: bool, messages: List[Message]):
         """
         Core of this Bot: Create a scheduled element that will send a POST request
         to the Discord webhook.
@@ -53,13 +49,11 @@ class Reminder:
         :param mentions: True if this reminder has to mentions the members.
         :param messages: List of Message object containing the text and card used to generate a Reminder.
         """
-        self.db = Database()
-        self.client = client
         self.mentions = mentions
 
         self.attendance: Union[None, tuple] = None
         self.message = self.format_message(self.retrieve_messages(messages))
-        self.card = self.create_card(self.retrieve_raw_card(messages))
+        self.card: Embed = self.create_card(self.retrieve_raw_card(messages))
 
         self.__initialize(name, days, hour, minute)
 
@@ -96,19 +90,11 @@ class Reminder:
         return messages[0].get_card()
 
     @staticmethod
-    def create_card(card):
+    def create_card(card: Card):
 
         if card:
+            return card.get_embed()
 
-            embed = Embed(
-                title=card.title,
-                description=card.description,
-                url=card.url,
-                colour=card.color
-            )
-            embed.set_thumbnail(url=card.thumbnail)
-
-            return embed
         return None
 
     def format_message(self, raw_text: list) -> str:
@@ -162,8 +148,9 @@ class Reminder:
 
         return f"{text}."
 
-    def add_mentions(self, text: str) -> str:
-        users = self.db.get_users_to_mention()
+    @staticmethod
+    def add_mentions(text: str) -> str:
+        users = config.db.get_users_to_mention()
 
         # Set users to empty string if the list is empty
         if len(users) == 0:
@@ -184,13 +171,13 @@ class Reminder:
         async def job():
             nonlocal self
 
-            channel = self.client.get_channel(CHANNEL_ID)
+            channel = config.discord.get_channel(config.DISCORD_CHANNEL_ID)
             async with channel.typing():
 
                 # Append the mentions to the message
                 text = self.add_mentions(self.message)
 
-                time.sleep(5)
+                time.sleep(3)
 
                 # Send through Discord # https://gist.github.com/Vexs/629488c4bb4126ad2a9909309ed6bd71
                 message: Message = await channel.send(text, embed=self.card)
@@ -199,8 +186,8 @@ class Reminder:
                 if self.attendance:
                     await message.add_reaction(emoji="\u2705")
 
-                    globals.last_message = message.id
-                    globals.last_attendance = self.attendance
+                    config.last_message = message.id
+                    config.last_attendance = self.attendance
 
             # Job triggered
             print(f"[!] Job triggered: {datetime.now()} - {name}.")

@@ -1,8 +1,10 @@
 
-from typing import NamedTuple, Dict
+from dataclasses import dataclass
+from discord import Embed
 
 
-class Card(NamedTuple):
+@dataclass
+class Card:
     """Card data structure. Used to store card details."""
 
     title: str
@@ -10,6 +12,22 @@ class Card(NamedTuple):
     description: str
     color: int
     thumbnail: str
+    footer: str = None
+
+    def get_embed(self):
+
+        embed = Embed(
+            title=self.title,
+            description=self.description,
+            url=self.url,
+            colour=self.color
+        )
+        embed.set_thumbnail(url=self.thumbnail)
+
+        if self.footer:
+            embed.set_footer(text=self.footer)
+
+        return embed
 
 
 class Message:

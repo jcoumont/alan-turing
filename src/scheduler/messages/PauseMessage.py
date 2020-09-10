@@ -1,5 +1,5 @@
 
-from src.reminders.messages import Message
+from src.scheduler.messages import Message
 
 
 class PauseMessage(Message):
