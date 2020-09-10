@@ -19,7 +19,7 @@ class AttendanceMessage(Message):
 
     message = f"c'est le moment de pointer sur {URL}"
 
-    def __init__(self, period: TimePeriodsEnum, at_home: str) -> None:
+    def __init__(self, period: TimePeriodsEnum, at_home: bool) -> None:
         """
         Attendance message: used in a reminder that need to reminds to go to my.becode.org
         """
@@ -34,5 +34,5 @@ class AttendanceMessage(Message):
     def get_card() -> Card:
         return AttendanceMessage.card
 
-    def get_attendance_details(self) -> Tuple[TimePeriodsEnum, str]:
+    def get_attendance_details(self) -> Tuple[TimePeriodsEnum, bool]:
         return self.period, self.at_home
