@@ -72,6 +72,8 @@ class Commands:
                     and reaction.message.id == config.last_message \
                     and not user.bot:
 
+                print("[log] User added reaction.")
+
                 # Retrieve the token from the database
                 token = config.db.get_token(user.mention)
 
@@ -82,7 +84,14 @@ class Commands:
                     if config.last_attendance:
 
                         attendance = config.last_attendance
-                        AttendanceRequest(attendance[0], attendance[1], token).send()
+                        if AttendanceRequest(attendance[0], attendance[1], token).send():
+
+                            print("[log] Attendance was correctly send.")
+                            await user.send(f"{user.mention} J'ai bien pointé pour toi sur Becode !")
+
+                        else:
+                            print("[log] Attendance was NOT correctly send.")
+                            await user.send(f"{user.mention} OUPS ! Une **erreur** s'est produite... Passe par https://my.becode.org pour pointer.")
 
         return self
 

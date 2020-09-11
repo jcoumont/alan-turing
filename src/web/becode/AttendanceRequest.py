@@ -20,4 +20,16 @@ class AttendanceRequest:
 
     def send(self):
         response = requests.post(url=URL, json=self.data, headers=self.header)
-        print(response.json())
+        print("response received")
+        return self.return_status(response)
+
+    @staticmethod
+    def return_status(response):
+
+        if response.status_code == 200:
+            status = response.json()
+
+            if status['data']['recordAttendanceTime']:
+                return True
+
+        return False
