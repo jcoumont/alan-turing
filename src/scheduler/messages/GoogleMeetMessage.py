@@ -1,5 +1,5 @@
 
-from src.scheduler.messages import Message, Card
+from src.scheduler.messages import Message, Card, MessageWeight
 
 # Google meet URL
 URL = "https://meet.google.com/hfe-twue-vsb"
@@ -24,12 +24,12 @@ class GoogleMeetMessage(Message):
         :param event_name: The name of the Google Meet event.
         :param delay: Delay (in minutes) until the beginning of this event.
         """
-        self.name = "googlemeet"
+        super().__init__(GoogleMeetMessage.message, URL)
+
+        self.weight = MessageWeight.MEET
 
         self.event_name = event_name
         self.delay = delay
-
-        super().__init__(GoogleMeetMessage.message, URL)
 
     def get_message(self) -> str:
         """Override Message.get_content to insert the event_name and the delay."""

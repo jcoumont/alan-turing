@@ -1,8 +1,8 @@
 
 import copy
 from typing import Tuple
-from src.scheduler.messages import Message, Card
-from src.web.becode import TimePeriodsEnum
+from src.scheduler.messages import Message, Card, MessageWeight
+from src.web.becode import Periods, Locations
 
 # my.becode.org URL
 URL = "https://my.becode.org"
@@ -21,31 +21,23 @@ class AttendanceMessage(Message):
 
     message = f"c'est le moment de pointer sur {URL}"
 
-    def __init__(self, period: TimePeriodsEnum, at_home: bool) -> None:
+    def __init__(self, period: Periods, at_home: Locations) -> None:
         """
         Attendance message: used in a reminder that need to reminds to go to my.becode.org
         """
-        self.name = "attendance"
+        super().__init__(AttendanceMessage.message, URL)
+
+        self.weight = MessageWeight.ATTENDANCE
 
         self.period = period
         self.at_home = at_home
 
-        super().__init__(AttendanceMessage.message, URL)
-
     def get_card(self) -> Card:
 
-        # TODO: Replace by an Enum
-        def get_location():
-            nonlocal self
-
-            if self.at_home:
-                return "Home"
-            return "Becode"
-
         card = copy.copy(AttendanceMessage.card)
-        card.footer = card.footer % (self.period.value[0], get_location())
+        card.footer = card.footer % (self.period.value, self.at_home.value[0])
 
         return card
 
-    def get_attendance_details(self) -> Tuple[TimePeriodsEnum, bool]:
+    def get_attendance_details(self) -> Tuple[Periods, Locations]:
         return self.period, self.at_home

@@ -1,5 +1,5 @@
 
-from src.web.becode import TimePeriodsEnum
+from src.web.becode import Periods, Locations
 from dataclasses import dataclass
 
 
@@ -7,8 +7,8 @@ from dataclasses import dataclass
 class AttendanceJson:
     """Create and return the JSON structure to post."""
 
-    period: TimePeriodsEnum
-    at_home: bool
+    period: Periods
+    at_home: Locations
 
     def get_json(self):
 
@@ -16,7 +16,7 @@ class AttendanceJson:
             "operationName": "record_attendance_time",
             "variables": {
                 "period": self.period.name,
-                "atHome": self.at_home
+                "atHome": self.at_home.value[1]
             },
             "extensions": {
                 "persistedQuery": {

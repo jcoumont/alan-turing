@@ -2,7 +2,6 @@
 from src import config
 
 import requests
-from os import environ
 from typing import NamedTuple
 
 

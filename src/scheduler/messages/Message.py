@@ -1,6 +1,7 @@
 
 from dataclasses import dataclass
 from discord import Embed
+from enum import Enum
 
 
 @dataclass
@@ -43,6 +44,8 @@ class Message:
         self.message = message
         self.url = url
 
+        self.weight = MessageWeight.TEXT
+
     def get_message(self) -> str:
         """Return a tuple with a randomly chosen message and the card."""
 
@@ -51,3 +54,12 @@ class Message:
     @staticmethod
     def get_card() -> None:
         return None
+
+
+class MessageWeight(Enum):
+    """Enum message type by importance. Smaller value = More important !"""
+
+    ATTENDANCE = 0
+    MEET = 2
+    PAUSE = 3
+    TEXT = 4

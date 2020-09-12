@@ -1,7 +1,8 @@
 
 import requests
 from src.web.becode import AttendanceJson
-from src.web.becode import TimePeriodsEnum
+from src.web.becode import Periods, Locations
+from threading import Thread
 
 # Debug values:
 # import http.client
@@ -11,25 +12,33 @@ from src.web.becode import TimePeriodsEnum
 URL = "https://graph.becode.org/"
 
 
-class AttendanceRequest:
+class AttendanceRequest(Thread):
 
-    def __init__(self, period: TimePeriodsEnum, at_home: bool, token: str):
+    def __init__(self, period: Periods, at_home: Locations, token: str):
+        Thread.__init__(self)
 
         self.data = AttendanceJson(period=period, at_home=at_home).get_json()
         self.header = {"Authorization": f"Bearer {token}"}
 
-    def send(self):
-        response = requests.post(url=URL, json=self.data, headers=self.header)
-        print("response received")
-        return self.return_status(response)
+        self.response = None
 
-    @staticmethod
-    def return_status(response):
+    def __send(self):
+        self.response = requests.post(url=URL, json=self.data, headers=self.header)
 
-        if response.status_code == 200:
-            status = response.json()
+    def run(self):
+        self.__send()
 
-            if status['data']['recordAttendanceTime']:
-                return True
+    def get_status(self):
+        """Return the request status."""
+
+        if self.response.status_code == 200:
+            status = self.response.json()
+
+            try:
+                if status['data']['recordAttendanceTime']:
+                    return True
+
+            except KeyError:
+                return False
 
         return False

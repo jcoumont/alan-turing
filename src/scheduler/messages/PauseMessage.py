@@ -1,5 +1,5 @@
 
-from src.scheduler.messages import Message
+from src.scheduler.messages import Message, MessageWeight
 
 
 class PauseMessage(Message):
@@ -12,10 +12,10 @@ class PauseMessage(Message):
 
         :param duration: The duration of the pause
         """
-        self.name = "pause"
-
-        self.duration = duration
         super().__init__(PauseMessage.message)
+
+        self.weight = MessageWeight.PAUSE
+        self.duration = duration
 
     def get_message(self) -> str:
 

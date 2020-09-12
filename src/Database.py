@@ -67,7 +67,7 @@ class Database:
         return user_data['token'].values.tolist()
 
     def __initialize_db(self):
-        """Initialize the database once this class is instanciated."""
+        """Initialize the database once this class is instantiated."""
 
         # If a database already exists, load it.
         if os.path.isfile('database.p'):
