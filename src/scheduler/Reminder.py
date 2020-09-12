@@ -83,9 +83,9 @@ class Reminder:
         texts = []
 
         for message in sorted_messages.values():
-            texts.append(self.__to_uppercase(message.message))
+            texts.append(self.__to_uppercase(message.get_message()))
 
-        message_text = ".".join(texts)
+        message_text = ". ".join(texts) + " !"
 
         return message_text, message_embed
 
