@@ -2,6 +2,7 @@
 from src import config
 from src.web.becode import AttendanceRequest
 
+import re
 from typing import Union
 from discord import Reaction, User, Member
 
@@ -22,36 +23,38 @@ class Commands:
             """User command to activate mentions on appointment reminders."""
 
             # Retrieve the user
-            author = context.message.author.mention
+            mention = context.message.author.mention
+            author = self.get_author_id(mention)
 
             # Update the database
             config.db.update(author, 'notification', True)
 
             # Log and send a confirmation to user
             print(f"[!] Mention added: {author} will receive mentions on reminders.")
-            await context.send(f"{author} Tu n'as plus besoin de ton cerveau, je te mentionnerai à chaque pointage !")
+            await context.send(f"{mention} Tu n'as plus besoin de ton cerveau, je te mentionnerai à chaque pointage !")
 
         @config.discord.command(name="removeuser", pass_context=True)
         async def remove_user(context) -> None:
             """User command to deactivate mentions on appointment reminders."""
 
             # Retrieve the user
-            author = context.message.author.mention
+            mention = context.message.author.mention
+            author = self.get_author_id(mention)
 
             # Update the database
             config.db.update(author, 'notification', False)
 
             # Log and send a confirmation to user
             print(f"[!] Mention added: {author} will stop receiving mentions on reminders.")
-            await context.send(f"{author} L'oiseau prend son envol ! Je ne te mentionnerai plus les pointages.")
+            await context.send(f"{mention} L'oiseau prend son envol ! Je ne te mentionnerai plus les pointages.")
 
         @config.discord.command(name="addtoken", pass_contexr=True)
         async def add_token(context, token: str) -> None:
             """User command to add its token to the database."""
 
             # Retrieve the user
-            author = context.message.author.mention
-            print(author)
+            mention = context.message.author.mention
+            author = self.get_author_id(mention)
 
             if len(token) > 1:
 
@@ -60,10 +63,10 @@ class Commands:
 
                 # Log and send a confirmation to user
                 print(f"[!] Token added: {author} added token: {token}")
-                await context.send(f"{author}, le token '{token}' a bien été ajouté")
+                await context.send(f"{mention}, le token '{token}' a bien été ajouté")
 
             else:
-                await context.send(f"{author}, ton token n'est pas valide.")
+                await context.send(f"{mention}, ton token n'est pas valide.")
 
         @config.discord.event
         async def on_reaction_add(reaction: Reaction, user: Union[User, Member]):
@@ -76,7 +79,10 @@ class Commands:
                 print("[!] User added reaction.")
 
                 # Retrieve the token from the database
-                token = config.db.get_token(user.mention)
+                mention = user.mention
+                author = self.get_author_id(mention)
+
+                token = config.db.get_token(author)
 
                 if token:
                     token = token[0]
@@ -93,19 +99,23 @@ class Commands:
 
                         if request.get_status():
 
-                            print(f"[!] Attendance was correctly send for {user.mention}.")
-                            await user.send(f"{user.mention} J'ai bien pointé pour toi sur Becode !")
+                            print(f"[!] Attendance was correctly send for {author}.")
+                            await user.send(f"{mention} J'ai bien pointé pour toi sur Becode !")
 
                         else:
-                            print(f"[!] Attendance was NOT correctly send for {user.mention}.")
-                            await user.send(f"{user.mention} OUPS ! Une **erreur** s'est produite... Passe par https://my.becode.org pour pointer.")
+                            print(f"[!] Attendance was NOT correctly send for {author}.")
+                            await user.send(f"{mention} OUPS ! Une **erreur** s'est produite... Passe par https://my.becode.org pour pointer.")
 
                 else:
-                    print(f"[!] Missing token for {user.mention}.")
-                    await user.send(f"{user.mention} OUPS ! Une **erreur** s'est produite: Je n'ai pas trouvé ton token... Ajoute un token avec la commande **!addtoken**.")
+                    print(f"[!] Missing token for {author}.")
+                    await user.send(f"{mention} OUPS ! Une **erreur** s'est produite: Je n'ai pas trouvé ton token... Ajoute un token avec la commande **!addtoken**.")
 
         return self
 
     @staticmethod
     def start() -> None:
         config.discord.run(config.DISCORD_TOKEN)
+
+    @staticmethod
+    def get_author_id(mention):
+        return re.sub(r'[<>!@]', '', mention)
