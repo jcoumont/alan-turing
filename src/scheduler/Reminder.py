@@ -122,7 +122,7 @@ class Reminder:
             users = ""
 
         # Append the users to mention
-        return "".join([f"{text}\n"] + [f" {user}" for user in users])
+        return "".join([f"{text}\n"] + [f" <@{user}>" for user in users])
 
     def __initialize(self, name: str, days: str, hour: int, minute: int) -> None:
         """
