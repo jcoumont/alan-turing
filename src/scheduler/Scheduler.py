@@ -19,8 +19,8 @@ class Scheduler:
         Reminder("Pointage 9h - Home", 'mon, fri', 8, 50, True, [MeetMsg("réunion", 10), AttendanceMsg(Periods.MORNING, Loc.HOME)])
 
         # Pauses
-        Reminder("Pause 11h - All", 'mon-fri', 11, 0, False, [PauseMsg(15)])
-        Reminder("Pause 15h - All", 'mon-fri', 15, 0, False, [PauseMsg(15)])
+        Reminder("Pause 11h - All", 'mon-fri', 11, 0, True, [PauseMsg(15)])
+        Reminder("Pause 15h - All", 'mon-fri', 15, 0, True, [PauseMsg(15)])
 
         # Lunch attendances
         Reminder("Pointage 12h30 - Becode", 'tue, wed, thu', 12, 30, True, [AttendanceMsg(Periods.LUNCH, Loc.BECODE)])
