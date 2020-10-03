@@ -3,3 +3,4 @@ requests
 pytz
 apscheduler
 pandas
+discord.py
