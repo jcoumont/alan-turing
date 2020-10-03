@@ -16,6 +16,6 @@ script:
 deploy:
   provider: script
   script:
-    docker push joffreybvn/flask-demo-api:latest;
+    docker push joffreybvn/alan-turing-bot:latest;
   on:
     branch: master
