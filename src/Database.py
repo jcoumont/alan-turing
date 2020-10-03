@@ -6,6 +6,9 @@ from typing import Any, Union
 from dataclasses import dataclass
 
 
+DB_PATH = './db/database.p'
+
+
 @dataclass
 class Entry:
     """Default database entry, used for new users."""
@@ -70,7 +73,7 @@ class Database:
         """Initialize the database once this class is instantiated."""
 
         # If a database already exists, load it.
-        if os.path.isfile('database.p'):
+        if os.path.isfile(DB_PATH):
             return self.__load_db()
 
         # Else, return a new default one.
@@ -80,10 +83,10 @@ class Database:
     def __save_db(self) -> None:
         """Save the database into a "database.p" file."""
 
-        pickle.dump(self.db, open("database.p", "wb"))
+        pickle.dump(self.db, open(DB_PATH, "wb"))
 
     @staticmethod
     def __load_db():
         """Load and return the database from a "database.p" file."""
 
-        return pickle.load(open("database.p", "rb"))
+        return pickle.load(open(DB_PATH, "rb"))
