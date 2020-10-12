@@ -1,6 +1,6 @@
 
 from src import config
-from src.web.becode import AttendanceRequest
+from src.web.becode import AttendanceRequest, Locations
 
 import re
 from typing import Union
@@ -72,43 +72,51 @@ class Commands:
         async def on_reaction_add(reaction: Reaction, user: Union[User, Member]):
             """Event triggered when a user click a reaction to send an attendance to Becode."""
 
-            if str(reaction.emoji) == "\u2705" \
-                    and reaction.message.id == config.last_message \
-                    and not user.bot:
+            if reaction.message.id == config.last_message and not user.bot:
+                location = None
 
-                print("[!] User added reaction.")
+                # Emoji: House
+                if str(reaction.emoji == "\u1F3E0"):
+                    location = Locations.HOME
 
-                # Retrieve the token from the database
-                mention = user.mention
-                author = self.get_author_id(mention)
+                # Emoji: City
+                elif str(reaction.emoji == "\u1F3D9"):
+                    location = Locations.BECODE
 
-                token = config.db.get_token(author)
+                if location:
+                    print("[!] User added reaction.")
 
-                if token:
-                    token = token[0]
+                    # Retrieve the token from the database
+                    mention = user.mention
+                    author = self.get_author_id(mention)
 
-                    # Send an attendance request to Becode
-                    if config.last_attendance:
+                    token = config.db.get_token(author)
 
-                        # Init and send the request
-                        attendance = config.last_attendance
-                        request = AttendanceRequest(attendance[0], attendance[1], token)
+                    if token:
+                        token = token[0]
 
-                        request.start()
-                        request.join()
+                        # Send an attendance request to Becode
+                        if config.last_attendance:
 
-                        if request.get_status():
+                            # Init and send the request
+                            attendance = config.last_attendance
+                            request = AttendanceRequest(attendance[0], location, token)
 
-                            print(f"[!] Attendance was correctly send for {author}.")
-                            await user.send(f"{mention} J'ai bien pointé pour toi sur Becode !")
+                            request.start()
+                            request.join()
 
-                        else:
-                            print(f"[!] Attendance was NOT correctly send for {author}.")
-                            await user.send(f"{mention} OUPS ! Une **erreur** s'est produite... Passe par https://my.becode.org pour pointer.")
+                            if request.get_status():
 
-                else:
-                    print(f"[!] Missing token for {author}.")
-                    await user.send(f"{mention} OUPS ! Une **erreur** s'est produite: Je n'ai pas trouvé ton token... Ajoute un token avec la commande **!addtoken**.")
+                                print(f"[!] Attendance was correctly send for {author}.")
+                                await user.send(f"{mention} J'ai bien pointé pour toi sur Becode !")
+
+                            else:
+                                print(f"[!] Attendance was NOT correctly send for {author}.")
+                                await user.send(f"{mention} OUPS ! Une **erreur** s'est produite... Passe par https://my.becode.org pour pointer.")
+
+                    else:
+                        print(f"[!] Missing token for {author}.")
+                        await user.send(f"{mention} OUPS ! Une **erreur** s'est produite: Je n'ai pas trouvé ton token... Ajoute un token avec la commande **!addtoken**.")
 
         return self
 

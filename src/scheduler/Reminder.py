@@ -154,7 +154,8 @@ class Reminder:
 
                 # Add a reaction to the message if the message is attendance related
                 if self.attendance:
-                    await message.add_reaction(emoji="\u2705")
+                    await message.add_reaction(emoji="\u1F3E0")  # House
+                    await message.add_reaction(emoji="\u1F3D9")  # City
 
                     # Save the attendance details
                     config.last_message = message.id
