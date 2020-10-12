@@ -76,11 +76,11 @@ class Commands:
                 location = None
 
                 # Emoji: House
-                if str(reaction.emoji == "\u1F3E0"):
+                if str(reaction.emoji == "\U0001F3E0"):
                     location = Locations.HOME
 
                 # Emoji: City
-                elif str(reaction.emoji == "\u1F3D9"):
+                elif str(reaction.emoji == "\U0001F307"):
                     location = Locations.BECODE
 
                 if location:
