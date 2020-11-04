@@ -2,7 +2,7 @@
 from src.scheduler.messages import Message, Card, MessageWeight
 
 # Google meet URL
-URL = "https://meet.google.com/hfe-twue-vsb"
+URL = "https://meet.google.com/stq-ocmn-ebh"
 
 
 class GoogleMeetMessage(Message):
@@ -10,7 +10,7 @@ class GoogleMeetMessage(Message):
     card = Card(
         title="Google Meet",
         url=URL,
-        description=f"Votre coach préféré vous invite à participer à la [visioconférence]({URL}) des Turings sur Google Meet.",
+        description=f"Votre coach préféré et vénéré vous invite à participer à la [visioconférence]({URL}) des Thomas sur Google Meet.",
         color=3510917,
         thumbnail="https://i.imgur.com/ehlNUYU.png"
     )
