@@ -30,7 +30,7 @@ class Scheduler:
         Reminder("Pause 15h - All", 'mon-fri', 15, 0, True, [PauseMsg(15)])
 
         # Watches
-        Reminder("Watch", 'mon-fri', 15, 10, True, [Message("Dans 5 minutes, c'est l'heure du watch! RDV dans le canal **veille**")])
+        Reminder("Watch", 'mon-fri', 15, 10, True, [Message("Dans 5 minutes, c'est l'heure du watch! RDV dans le canal `#veilles `")])
         
         return self
 
