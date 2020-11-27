@@ -38,17 +38,19 @@ linkers: Tuple = (
 
 class Reminder:
 
-    def __init__(self, name: str, days: str, hour: int, minute: int, mentions: bool, messages: List[Message]):
+    def __init__(self, name: str, days: str, hour: int, minute: int,
+                 mentions: bool, messages: List[Message]):
         """
-        Core of this Bot: Create a scheduled element that will send a POST request
-        to the Discord webhook.
+        Core of this Bot: Create a scheduled element that will send a
+        POST request to the Discord webhook.
 
         :param name: The name of the reminder. For clarity only.
         :param days: Days of the week when this reminder has to trigger.
         :param hour: Hour of the day when this reminder has to trigger.
         :param minute: Minutes of when this reminder has to trigger.
         :param mentions: True if this reminder has to mentions the members.
-        :param messages: List of Message object containing the text and card used to generate a Reminder.
+        :param messages: List of Message object containing the text and
+                         card used to generate a Reminder.
         """
         self.mentions = mentions
         self.messages = messages
@@ -78,7 +80,9 @@ class Reminder:
 
         # MESSAGE TEXT
         # Sort the messages by higher weight to smaller weight
-        sorted_messages = dict(sorted(messages.items(), key=operator.itemgetter(0), reverse=True))
+        sorted_messages = dict(sorted(messages.items(),
+                                      key=operator.itemgetter(0),
+                                      reverse=True))
 
         texts = []
 
@@ -90,7 +94,8 @@ class Reminder:
         return message_text, message_embed
 
     def __retrieve_attendance(self):
-        """Loop through every message and return the attendance details, if they exists."""
+        """Loop through every message and return the attendance details,
+        if they exists."""
 
         for message in self.messages:
             if message.weight == MessageWeight.ATTENDANCE:
@@ -124,7 +129,8 @@ class Reminder:
         # Append the users to mention
         return "".join([f"{text}\n"] + [f" <@{user}>" for user in users])
 
-    def __initialize(self, name: str, days: str, hour: int, minute: int) -> None:
+    def __initialize(self, name: str, days: str,
+                     hour: int, minute: int) -> None:
         """
         The core of the Reminder class: This function create a scheduler to
         post self.message and self.card on Discord via a WebRequest.
@@ -132,7 +138,8 @@ class Reminder:
         Used internally only. Parameters are the same than this class.
         """
 
-        @scheduler.scheduled_job('cron', day_of_week=days, hour=hour, minute=minute, timezone=tz)
+        @scheduler.scheduled_job('cron', day_of_week=days,
+                                 hour=hour, minute=minute, timezone=tz)
         async def job():
             nonlocal self
 
@@ -152,7 +159,8 @@ class Reminder:
                 # https://gist.github.com/Vexs/629488c4bb4126ad2a9909309ed6bd71
                 message: Message = await channel.send(text, embed=self.embed)
 
-                # Add a reaction to the message if the message is attendance related
+                # Add a reaction to the message if the message is
+                # attendance related
                 if self.attendance:
                     await message.add_reaction(emoji="\U0001F3E0")  # House
                     await message.add_reaction(emoji="\U0001F307")  # City
