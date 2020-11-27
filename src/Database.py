@@ -141,7 +141,7 @@ class Database:
     def __load_db_jokes():
         """Load and return the database from a "bad_jokes.csv" file."""
         return pd.read_csv(DB_JOKES_PATH)
-    
+
     def get_random_joke(self):
         if self.db_jokes is None or len(self.db_jokes.index) == 0:
             return None
@@ -149,3 +149,11 @@ class Database:
             r_int = random.randint(0, len(self.db_jokes.index))
             idx = self.db_jokes.index[r_int]
             return self.db_jokes.loc[idx, 'joke']
+
+    def get_random_philo(self):
+        if self.db_philo is None or len(self.db_philo.index) == 0:
+            return None
+        else:
+            r_int = random.randint(0, len(self.db_philo.index))
+            idx = self.db_philo.index[r_int]
+            return self.db_philo.loc[idx, :]

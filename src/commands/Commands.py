@@ -81,10 +81,32 @@ class Commands:
             # Select a joke from the database
             joke = config.db.get_random_joke()
 
-            # Log and share the joke
-            print(f"[!] Joke shared: {author}")
-            await context.send(f"{joke}")
+            if joke:
+                # Log and share the joke
+                print(f"[!] Joke shared: {author}")
+                await context.send(f"{joke}")
 
+        @config.discord.command(name="philo", pass_contexr=True, aliases=['philosophy'])
+        async def share_philo(context) -> None:
+            """User command to share a joke on the channel.
+            Joke are as a bot too fun to be private...
+            """
+
+            # Retrieve the user
+            mention = context.message.author.mention
+            author = self.get_author_id(mention)
+
+            # Select a joke from the database
+            philo = config.db.get_random_philo()
+
+            if philo:
+                # Log and share the joke
+                print(f"[!] Philo shared: {author}")
+
+                if philo.source == philo.source:  # source known
+                    await context.send(f"{philo.quote}\n\n**by** *{philo.author}* in *{philo.source}*")
+                else:                             # source unknown
+                    await context.send(f"{philo.quote}\n\n**by** *{philo.author}*")
 
         @config.discord.event
         async def on_reaction_add(reaction: Reaction, user: Union[User, Member]):
