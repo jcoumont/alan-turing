@@ -8,8 +8,8 @@ from typing import NamedTuple
 class WebRequest:
 
     properties = {
-        "username": "Alan Turing",
-        "avatar_url": "https://i.imgur.com/JD51N3v.jpg"
+        "username": "Rachel Thomas",
+        "avatar_url": "https://imgur.com/a/Eq2CpUc"
     }
 
     def __init__(self, content: str = None, card=None):
