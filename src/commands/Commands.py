@@ -102,8 +102,8 @@ class Commands:
             # Select a joke from the database
             philo = config.db.get_random_philo()
 
-            if philo:
-                # Log and share the joke
+            if not philo.empty:
+                # Log and share the philo
                 print(f"[!] Philo shared: {author}")
 
                 if philo.source == philo.source:  # source known
@@ -113,6 +113,18 @@ class Commands:
                 else:  # source unknown
                     await context.send(f"{philo.quote}\n\n**by** *{philo.author}*")
 
+        @config.discord.command(name="python", pass_contexr=True)
+        async def share_python(context) -> None:
+            """User command to share show python code
+            """
+
+            # Retrieve the user
+            mention = context.message.author.mention
+            author = self.get_author_id(mention)
+
+
+            await context.send("def hello_world():\n\tprint('Hello World!')")
+            
         @config.discord.event
         async def on_reaction_add(reaction: Reaction, user: Union[User, Member]):
             """Event triggered when a user click a reaction to send an attendance to Becode."""
