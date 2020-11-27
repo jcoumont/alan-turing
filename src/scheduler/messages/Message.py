@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass
 from discord import Embed
 from enum import Enum
@@ -21,7 +20,7 @@ class Card:
             title=self.title,
             description=self.description,
             url=self.url,
-            colour=self.color
+            colour=self.color,
         )
         embed.set_thumbnail(url=self.thumbnail)
 
@@ -32,7 +31,6 @@ class Card:
 
 
 class Message:
-
     def __init__(self, message: str, url: str = None) -> None:
         """
         Message class: Generate a message and a card to be used in a Reminder.

@@ -1,4 +1,3 @@
-
 from src import config
 
 import requests
@@ -9,7 +8,7 @@ class WebRequest:
 
     properties = {
         "username": "Rachel Thomas",
-        "avatar_url": "https://imgur.com/a/Eq2CpUc"
+        "avatar_url": "https://imgur.com/a/Eq2CpUc",
     }
 
     def __init__(self, content: str = None, card=None):

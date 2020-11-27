@@ -1,4 +1,3 @@
-
 import requests
 from src.web.becode import AttendanceJson
 from src.web.becode import Periods, Locations
@@ -13,7 +12,6 @@ URL = "https://graph.becode.org/"
 
 
 class AttendanceRequest(Thread):
-
     def __init__(self, period: Periods, at_home: Locations, token: str):
         Thread.__init__(self)
 
@@ -35,7 +33,7 @@ class AttendanceRequest(Thread):
             status = self.response.json()
 
             try:
-                if status['data']['recordAttendanceTime']:
+                if status["data"]["recordAttendanceTime"]:
                     return True
 
             except KeyError:

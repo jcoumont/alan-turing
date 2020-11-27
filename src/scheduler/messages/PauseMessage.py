@@ -1,4 +1,3 @@
-
 from src.scheduler.messages import Message, MessageWeight
 
 

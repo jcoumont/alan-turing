@@ -1,4 +1,3 @@
-
 import pickle
 import random
 import os.path
@@ -7,14 +6,15 @@ from typing import Any, Union
 from dataclasses import dataclass
 
 
-DB_PATH = './db/database.p'
-DB_PHILO_PATH = './db/philosophy_quotes.csv'
-DB_JOKES_PATH = './db/bad_jokes.csv'
+DB_PATH = "./db/database.p"
+DB_PHILO_PATH = "./db/philosophy_quotes.csv"
+DB_JOKES_PATH = "./db/bad_jokes.csv"
 
 
 @dataclass
 class Entry:
     """Default database entry, used for new users."""
+
     user: str
     notification: bool = False
     token: str = None
@@ -25,15 +25,15 @@ class Entry:
 
 class Database:
 
-    empty = pd.DataFrame(columns=['user', 'notification', 'token'])
-    empty_philo = pd.DataFrame(columns=['quote', 'author', 'source'])
-    empty_jokes = pd.DataFrame(columns=['joke'])
+    empty = pd.DataFrame(columns=["user", "notification", "token"])
+    empty_philo = pd.DataFrame(columns=["quote", "author", "source"])
+    empty_jokes = pd.DataFrame(columns=["joke"])
 
     def __init__(self) -> None:
         """Small database used to store :
-           - if a user want to be notified or not.
-           - the philosophy quotes
-           - the 'jokes à papa'/bad jokes
+        - if a user want to be notified or not.
+        - the philosophy quotes
+        - the 'jokes à papa'/bad jokes
         """
 
         self.db = self.__initialize_db()
@@ -63,7 +63,7 @@ class Database:
             status = self.__create(user)
 
         # Update the desired field
-        self.db.loc[self.db['user'] == user, field] = value
+        self.db.loc[self.db["user"] == user, field] = value
 
         # Save the database to the disk
         self.__save_db()
@@ -71,14 +71,14 @@ class Database:
     def get_users_to_mention(self):
         """Return a list of all user to notify on reminders."""
 
-        notified = self.db[self.db['notification'] == True]
-        return notified['user'].values.tolist()
+        notified = self.db[self.db["notification"] == True]
+        return notified["user"].values.tolist()
 
     def get_token(self, user: str) -> Union[str, None]:
         """Return the token of a given user."""
 
-        user_data = self.db[self.db['user'] == user]
-        return user_data['token'].values.tolist()
+        user_data = self.db[self.db["user"] == user]
+        return user_data["token"].values.tolist()
 
     def __initialize_db(self):
         """Initialize the database once this class is instantiated."""
@@ -148,7 +148,7 @@ class Database:
         else:
             r_int = random.randint(0, len(self.db_jokes.index))
             idx = self.db_jokes.index[r_int]
-            return self.db_jokes.loc[idx, 'joke']
+            return self.db_jokes.loc[idx, "joke"]
 
     def get_random_philo(self):
         if self.db_philo is None or len(self.db_philo.index) == 0:

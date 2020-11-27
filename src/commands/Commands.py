@@ -1,4 +1,3 @@
-
 from src import config
 from src.web.becode import AttendanceRequest, Locations
 
@@ -8,15 +7,13 @@ from discord import Reaction, User, Member
 
 
 class Commands:
-
     def __init__(self) -> None:
         pass
 
     def initialize(self):
-
         @config.discord.event
         async def on_ready():
-            print(f'[+] Discord.py: {config.discord.user} has connected to Discord!')
+            print(f"[+] Discord.py: {config.discord.user} has connected to Discord!")
 
         @config.discord.command(name="adduser", pass_context=True)
         async def add_user(context) -> None:
@@ -27,11 +24,13 @@ class Commands:
             author = self.get_author_id(mention)
 
             # Update the database
-            config.db.update(author, 'notification', True)
+            config.db.update(author, "notification", True)
 
             # Log and send a confirmation to user
             print(f"[!] Mention added: {author} will receive mentions on reminders.")
-            await context.send(f"{mention} Tu n'as plus besoin de ton cerveau, je te mentionnerai à chaque pointage !")
+            await context.send(
+                f"{mention} Tu n'as plus besoin de ton cerveau, je te mentionnerai à chaque pointage !"
+            )
 
         @config.discord.command(name="removeuser", pass_context=True)
         async def remove_user(context) -> None:
@@ -42,11 +41,15 @@ class Commands:
             author = self.get_author_id(mention)
 
             # Update the database
-            config.db.update(author, 'notification', False)
+            config.db.update(author, "notification", False)
 
             # Log and send a confirmation to user
-            print(f"[!] Mention added: {author} will stop receiving mentions on reminders.")
-            await context.send(f"{mention} L'oiseau prend son envol ! Je ne te mentionnerai plus les pointages.")
+            print(
+                f"[!] Mention added: {author} will stop receiving mentions on reminders."
+            )
+            await context.send(
+                f"{mention} L'oiseau prend son envol ! Je ne te mentionnerai plus les pointages."
+            )
 
         @config.discord.command(name="addtoken", pass_contexr=True)
         async def add_token(context, token: str) -> None:
@@ -59,7 +62,7 @@ class Commands:
             if len(token) > 1:
 
                 # Update the database
-                config.db.update(author, 'token', token)
+                config.db.update(author, "token", token)
 
                 # Log and send a confirmation to user
                 print(f"[!] Token added: {author} added token: {token}")
@@ -68,7 +71,7 @@ class Commands:
             else:
                 await context.send(f"{mention}, ton token n'est pas valide.")
 
-        @config.discord.command(name="joke", pass_contexr=True, aliases=['melvin'])
+        @config.discord.command(name="joke", pass_contexr=True, aliases=["melvin"])
         async def share_joke(context) -> None:
             """User command to share a joke on the channel.
             Joke are as a bot too fun to be private...
@@ -86,7 +89,7 @@ class Commands:
                 print(f"[!] Joke shared: {author}")
                 await context.send(f"{joke}")
 
-        @config.discord.command(name="philo", pass_contexr=True, aliases=['philosophy'])
+        @config.discord.command(name="philo", pass_contexr=True, aliases=["philosophy"])
         async def share_philo(context) -> None:
             """User command to share a joke on the channel.
             Joke are as a bot too fun to be private...
@@ -104,8 +107,10 @@ class Commands:
                 print(f"[!] Philo shared: {author}")
 
                 if philo.source == philo.source:  # source known
-                    await context.send(f"{philo.quote}\n\n**by** *{philo.author}* in *{philo.source}*")
-                else:                             # source unknown
+                    await context.send(
+                        f"{philo.quote}\n\n**by** *{philo.author}* in *{philo.source}*"
+                    )
+                else:  # source unknown
                     await context.send(f"{philo.quote}\n\n**by** *{philo.author}*")
 
         @config.discord.event
@@ -147,16 +152,26 @@ class Commands:
 
                             if request.get_status():
 
-                                print(f"[!] Attendance was correctly send for {author}.")
-                                await user.send(f"{mention} J'ai bien pointé pour toi sur Becode !")
+                                print(
+                                    f"[!] Attendance was correctly send for {author}."
+                                )
+                                await user.send(
+                                    f"{mention} J'ai bien pointé pour toi sur Becode !"
+                                )
 
                             else:
-                                print(f"[!] Attendance was NOT correctly send for {author}.")
-                                await user.send(f"{mention} OUPS ! Une **erreur** s'est produite... Passe par https://my.becode.org pour pointer.")
+                                print(
+                                    f"[!] Attendance was NOT correctly send for {author}."
+                                )
+                                await user.send(
+                                    f"{mention} OUPS ! Une **erreur** s'est produite... Passe par https://my.becode.org pour pointer."
+                                )
 
                     else:
                         print(f"[!] Missing token for {author}.")
-                        await user.send(f"{mention} OUPS ! Une **erreur** s'est produite: Je n'ai pas trouvé ton token... Tu peux ajouter un token avec la commande **!addtoken**.\nPasse par https://my.becode.org pour le générer")
+                        await user.send(
+                            f"{mention} OUPS ! Une **erreur** s'est produite: Je n'ai pas trouvé ton token... Tu peux ajouter un token avec la commande **!addtoken**.\nPasse par https://my.becode.org pour le générer"
+                        )
 
         return self
 
@@ -166,4 +181,4 @@ class Commands:
 
     @staticmethod
     def get_author_id(mention):
-        return re.sub(r'[<>!@]', '', mention)
+        return re.sub(r"[<>!@]", "", mention)

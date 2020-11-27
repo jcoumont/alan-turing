@@ -1,4 +1,3 @@
-
 import copy
 from typing import Tuple
 from src.scheduler.messages import Message, Card, MessageWeight
@@ -16,7 +15,7 @@ class AttendanceMessage(Message):
         description=f"In Attendance We Trust ! Pointez maintenant sur [my.becode.org]({URL}). Ou cliquez directement sur la réaction ci-dessous.",
         color=5747135,
         thumbnail="https://i.imgur.com/ixU2HdV.gif",  # "https://i.imgur.com/cg4xd66.png",
-        footer="Vous pointerez pour %s @ %s."
+        footer="Vous pointerez pour %s @ %s.",
     )
 
     message = f"c'est le moment de pointer sur {URL}"
