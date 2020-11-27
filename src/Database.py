@@ -140,5 +140,3 @@ class Database:
     def __load_db_jokes():
         """Load and return the database from a "bad_jokes.csv" file."""
         return pd.read_csv(DB_JOKES_PATH)
-
-    
