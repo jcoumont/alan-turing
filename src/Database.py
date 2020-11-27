@@ -1,5 +1,6 @@
 
 import pickle
+import random
 import os.path
 import pandas as pd
 from typing import Any, Union
@@ -25,7 +26,7 @@ class Entry:
 class Database:
 
     empty = pd.DataFrame(columns=['user', 'notification', 'token'])
-    empty_philo = pd.DataFrame(columns=['quote', 'author', 'source', 'authorlink'])
+    empty_philo = pd.DataFrame(columns=['quote', 'author', 'source'])
     empty_jokes = pd.DataFrame(columns=['joke'])
 
     def __init__(self) -> None:
@@ -140,3 +141,11 @@ class Database:
     def __load_db_jokes():
         """Load and return the database from a "bad_jokes.csv" file."""
         return pd.read_csv(DB_JOKES_PATH)
+    
+    def get_random_joke(self):
+        if self.db_jokes is None or len(self.db_jokes.index) == 0:
+            return None
+        else:
+            r_int = random.randint(0, len(self.db_jokes.index))
+            idx = self.db_jokes.index[r_int]
+            return self.db_jokes.loc[idx, 'joke']

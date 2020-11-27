@@ -68,6 +68,24 @@ class Commands:
             else:
                 await context.send(f"{mention}, ton token n'est pas valide.")
 
+        @config.discord.command(name="joke", pass_contexr=True, aliases=['melvin'])
+        async def share_joke(context) -> None:
+            """User command to share a joke on the channel.
+            Joke are as a bot too fun to be private...
+            """
+
+            # Retrieve the user
+            mention = context.message.author.mention
+            author = self.get_author_id(mention)
+
+            # Select a joke from the database
+            joke = config.db.get_random_joke()
+
+            # Log and share the joke
+            print(f"[!] Joke shared: {author}")
+            await context.send(f"{joke}")
+
+
         @config.discord.event
         async def on_reaction_add(reaction: Reaction, user: Union[User, Member]):
             """Event triggered when a user click a reaction to send an attendance to Becode."""
