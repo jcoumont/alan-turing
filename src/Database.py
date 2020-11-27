@@ -7,6 +7,8 @@ from dataclasses import dataclass
 
 
 DB_PATH = './db/database.p'
+DB_PHILO_PATH = './db/philosophy_quotes.csv'
+DB_JOKES_PATH = './db/bad_jokes.csv'
 
 
 @dataclass
@@ -23,11 +25,19 @@ class Entry:
 class Database:
 
     empty = pd.DataFrame(columns=['user', 'notification', 'token'])
+    empty_philo = pd.DataFrame(columns=['quote', 'author', 'source', 'authorlink'])
+    empty_jokes = pd.DataFrame(columns=['joke'])
 
     def __init__(self) -> None:
-        """Small database used to store if a user want to be notified or not."""
+        """Small database used to store :
+           - if a user want to be notified or not.
+           - the philosophy quotes
+           - the 'jokes à papa'/bad jokes
+        """
 
         self.db = self.__initialize_db()
+        self.db_philo = self.__initialize_db_philo()
+        self.db_jokes = self.__initialize_db_jokes()
 
     def __create(self, user: str) -> bool:
         """
@@ -90,3 +100,45 @@ class Database:
         """Load and return the database from a "database.p" file."""
 
         return pickle.load(open(DB_PATH, "rb"))
+
+    def __initialize_db_philo(self):
+        """Initialize the database philo once this class is instantiated."""
+
+        # If a database already exists, load it.
+        if os.path.isfile(DB_PHILO_PATH):
+            return self.__load_db_philo()
+
+        # Else, return a new default one.
+        else:
+            return Database.empty_philo
+
+    def __save_db_philo(self) -> None:
+        """Save the database philo into a "philosophy_quotes.csv" file."""
+        pd.to_csv(DB_PHILO_PATH)
+
+    @staticmethod
+    def __load_db_philo():
+        """Load and return the database from a "philosophy_qutes.csv" file."""
+        return pd.read_csv(DB_PHILO_PATH)
+
+    def __initialize_db_jokes(self):
+        """Initialize the database jokes once this class is instantiated."""
+
+        # If a database already exists, load it.
+        if os.path.isfile(DB_JOKES_PATH):
+            return self.__load_db_jokes()
+
+        # Else, return a new default one.
+        else:
+            return Database.empty_jokes
+
+    def __save_db_jokes(self) -> None:
+        """Save the database jokes into a "bad_jokes.csv" file."""
+        pd.to_csv(DB_JOKES_PATH)
+
+    @staticmethod
+    def __load_db_jokes():
+        """Load and return the database from a "bad_jokes.csv" file."""
+        return pd.read_csv(DB_JOKES_PATH)
+
+    
