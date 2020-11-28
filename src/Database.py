@@ -77,8 +77,17 @@ class Database:
     def get_token(self, user: str) -> Union[str, None]:
         """Return the token of a given user."""
 
-        user_data = self.db[self.db["user"] == user]
-        return user_data["token"].values.tolist()
+        user_data = self.db[self.db['user'] == user]
+        return user_data['token'].values.tolist()
+    
+    def get_random_user(self) -> str:
+        """Return a random user."""
+
+        if self.db is None or len(self.db.index) == 0:
+            return None
+        else:
+            r_int = random.randint(0, len(self.db.index)-1)
+            return self.db.loc[r_int, "user"]
 
     def __initialize_db(self):
         """Initialize the database once this class is instantiated."""
@@ -150,7 +159,7 @@ class Database:
                 jokes = self.db_jokes[self.db_jokes.category == category]
             else:
                 jokes = self.db_jokes
-            r_int = random.randint(0, len(jokes.index))
+            r_int = random.randint(0, len(jokes.index)-1)
             idx = jokes.index[r_int]
             return jokes.loc[idx, "joke"]
 
@@ -158,6 +167,6 @@ class Database:
         if self.db_philo is None or len(self.db_philo.index) == 0:
             return None
         else:
-            r_int = random.randint(0, len(self.db_philo.index))
+            r_int = random.randint(0, len(self.db_philo.index)-1)
             idx = self.db_philo.index[r_int]
             return self.db_philo.loc[idx, :]
