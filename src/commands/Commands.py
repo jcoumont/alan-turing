@@ -169,7 +169,7 @@ class Commands:
             """User command to share python code"""
 
             await context.send(
-                "```python\ndef hello_world():\n\tprint('Hello World!')```"
+                "Je ne suis pas encore une experte... Sois indulgent\n```python\ndef hello_world():\n\tprint('Hello World!')```"
             )
 
         @config.discord.command(name="watchmaster", pass_contexr=True)
