@@ -1,8 +1,9 @@
 from src import config
 from src.web.becode import AttendanceRequest, Locations
-
+from bs4 import BeautifulSoup
 import re
 import time
+import requests
 from typing import Union
 from discord import Reaction, User, Member
 from discord.channel import DMChannel
@@ -182,6 +183,32 @@ class Commands:
             await context.send("Et le nouveau watchmaster est ...")
             time.sleep(1)
             await context.send(f"<@{watchmaster}>")
+
+        @config.discord.command(name="cheat", pass_contexr=True)
+        async def get_cheat(context, *cheat_q) -> None:
+            """User command to execute a cheat search
+            """
+
+            # Retrieve the user
+            mention = context.message.author.mention
+            author = self.get_author_id(mention)
+
+            url = "http://cheat.sh"
+            for q in cheat_q:
+                url += '/' + q
+
+            r = requests.get(url, headers={'User-Agent': 'Mozilla'})
+            soup = BeautifulSoup(r.content, 'lxml')
+
+            resp = soup.find_all('pre')[0].text
+            max_len = 2000 - 10 - len(url) 
+            resp = (resp[:max_len] + '..') if len(resp) > max_len else resp
+            if isinstance(context.channel, DMChannel):
+                await context.send(f"```{resp})```\n{url}")
+            else:
+                user = context.author
+                await user.send(f"```{resp})```\n{url}")
+                await context.send(f"{mention} Je t'ai envoyé un message avec les infos")
 
         @config.discord.event
         async def on_reaction_add(reaction: Reaction, user: Union[User, Member]):
