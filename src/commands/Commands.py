@@ -71,7 +71,7 @@ class Commands:
             else:
                 await context.send(f"{mention}, ton token n'est pas valide.")
 
-        @config.discord.command(name="joke", pass_contexr=True, aliases=["melvin"])
+        @config.discord.command(name="joke", pass_contexr=True)
         async def share_joke(context) -> None:
             """User command to share a joke on the channel.
             Joke are as a bot too fun to be private...
@@ -82,11 +82,43 @@ class Commands:
             author = self.get_author_id(mention)
 
             # Select a joke from the database
-            joke = config.db.get_random_joke()
+            joke = config.db.get_random_joke("papa")
 
             if joke:
                 # Log and share the joke
                 print(f"[!] Joke shared: {author}")
+                await context.send(f"{joke}")
+        
+        @config.discord.command(name="tom", pass_contexr=True)
+        async def have_a_nie_day(context) -> None:
+            """User command to share a joke on the channel.
+            Joke are as a bot too fun to be private...
+            """
+
+            # Retrieve the user
+            mention = context.message.author.mention
+            author = self.get_author_id(mention)
+
+            # Log and share the joke
+            print(f"[!] Tom shared: {author}")
+            await context.send("*And as always, have nice day!*\nhttps://www.youtube.com/watch?v=gpynsA-NZHI")
+
+        @config.discord.command(name="melvin", pass_contexr=True)
+        async def share_melvin(context) -> None:
+            """User command to share a "math" joke on the channel.
+            Joke are as a bot too fun to be private...
+            """
+
+            # Retrieve the user
+            mention = context.message.author.mention
+            author = self.get_author_id(mention)
+
+            # Select a "math" joke from the database
+            joke = config.db.get_random_joke('math')
+
+            if joke:
+                # Log and share the joke
+                print(f"[!] Melvin shared: {author}")
                 await context.send(f"{joke}")
 
         @config.discord.command(name="philo", pass_contexr=True, aliases=["philosophy"])
@@ -122,9 +154,8 @@ class Commands:
             mention = context.message.author.mention
             author = self.get_author_id(mention)
 
-
             await context.send("def hello_world():\n\tprint('Hello World!')")
-            
+
         @config.discord.event
         async def on_reaction_add(reaction: Reaction, user: Union[User, Member]):
             """Event triggered when a user click a reaction to send an attendance to Becode."""
