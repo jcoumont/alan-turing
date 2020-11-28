@@ -333,3 +333,4 @@ Temporary Items
 .nfs*
 docker-compose.yml
 .vscode/launch.json
+src/config.py
