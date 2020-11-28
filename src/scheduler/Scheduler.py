@@ -14,8 +14,14 @@ class Scheduler:
     def initialize(self):
         # Meetings
         Reminder(
-            "Morning meeting", "mon-fri", 8, 50, True, [MeetMsg("Daily briefing", 10)]
+            "Morning meeting",
+            "mon-fri",
+            8,
+            50,
+            True,
+            [MeetMsg("Daily briefing", 10)]
         )
+
         Reminder(
             "Debrief meeting",
             "mon-thu",
@@ -28,12 +34,13 @@ class Scheduler:
         # Attendances
         Reminder(
             "Pointage 9h - MyBecode",
-            "mon-fri",
-            20,
-            52,
+            "sat",
+            00,
+            7,
             True,
             [AttendanceMsg(Periods.MORNING, Loc.HOME)],
         )
+
         Reminder(
             "Pointage 12h30 - MyBecode",
             "mon-fri",
@@ -42,6 +49,7 @@ class Scheduler:
             True,
             [AttendanceMsg(Periods.LUNCH, Loc.HOME)],
         )
+
         Reminder(
             "Pointage 13h30 - MyBecode",
             "mon-fri",
@@ -50,11 +58,12 @@ class Scheduler:
             True,
             [AttendanceMsg(Periods.NOON, Loc.HOME)],
         )
+
         Reminder(
             "Pointage 17h - MyBecode",
             "mon-fri",
             17,
-            0,
+            1,
             True,
             [AttendanceMsg(Periods.EVENING, Loc.HOME)],
         )
@@ -68,45 +77,41 @@ class Scheduler:
         Reminder(
             "Watch",
             "mon-fri",
-            13,
-            25,
+            11,
+            10,
             True,
             [
                 Message(
-                    "Dans 5 minutes, c'est l'heure du watch! RDV dans le canal `#veilles`"
+                    "Dans 5 minutes, c'est l'heure du watch!\nRDV dans le canal **<#707548777858203739>**"
                 )
             ],
         )
 
-        # Réflexions
-        # Reminder("Coffee is all you need", 'fri', 8, 46, True,
-        #         [Message("sudo get me a coffee")])
         Reminder(
             "Week End",
             "fri",
-            16,
-            55,
+            17,
+            2,
             True,
             [
                 Message(
-                    "Tic... Tac... c'est bientôt le WE! On se revoit lundi. Bisous de loin"
+                    "Profitez bien de votre week-end!\nBisous de loin"
                 )
             ],
         )
+
         Reminder(
-            "Play time",
+            "Frijay",
             "fri",
             15,
             50,
             True,
             [
                 Message(
-                    "Dans 5 minutes, c'est l'heure du jeu du vendredi. Rejoingnez-nous pour relâcher la pression de la semaine"
+                    "In 10 minutes, It's Frijay fun times .\nJoin us on **<#741201587183157328>**"
                 )
             ],
         )
-        # Reminder("Pensée du jour", 'fri', 11, 17, True, [Message("Femme qui met la main à sa conscience ne peut plus dire du mal de sa voisine. | Proverbe.")])
-        # Reminder("Citation du jour", 'fri', 13, 39, True, [Message("J'ai le moral à Zorro... C'est comme le moral à zéro mais je suis masqué.")])
         return self
 
     @staticmethod
