@@ -2,8 +2,10 @@ from src import config
 from src.web.becode import AttendanceRequest, Locations
 
 import re
+import time
 from typing import Union
 from discord import Reaction, User, Member
+from discord.channel import DMChannel
 
 
 class Commands:
@@ -11,6 +13,7 @@ class Commands:
         pass
 
     def initialize(self):
+
         @config.discord.event
         async def on_ready():
             print(f"[+] Discord.py: {config.discord.user} has connected to Discord!")
@@ -29,7 +32,7 @@ class Commands:
             # Log and send a confirmation to user
             print(f"[!] Mention added: {author} will receive mentions on reminders.")
             await context.send(
-                f"{mention} Tu n'as plus besoin de ton cerveau, je te mentionnerai à chaque pointage !"
+                f"{mention} Tu n'as plus besoin de ton cerveau, je te mentionnerai à chaque rappel !"
             )
 
         @config.discord.command(name="removeuser", pass_context=True)
@@ -48,7 +51,7 @@ class Commands:
                 f"[!] Mention added: {author} will stop receiving mentions on reminders."
             )
             await context.send(
-                f"{mention} L'oiseau prend son envol ! Je ne te mentionnerai plus les pointages."
+                f"{mention} L'oiseau prend son envol ! Je ne te mentionnerai plus dans les rappels."
             )
 
         @config.discord.command(name="addtoken", pass_contexr=True)
@@ -87,21 +90,28 @@ class Commands:
             if joke:
                 # Log and share the joke
                 print(f"[!] Joke shared: {author}")
-                await context.send(f"{joke}")
-        
+                if isinstance(context.channel, DMChannel):
+                    await context.send("Mes blagues sont trop bonnes... Il faut les partager avec l'équipe")
+                    channel = config.discord.get_channel(config.DISCORD_CHANNEL_ID)
+                    await channel.send(f"{mention}\n{joke}")
+                else:
+                    await channel.send(f"{joke}")
+
         @config.discord.command(name="tom", pass_contexr=True)
-        async def have_a_nie_day(context) -> None:
-            """User command to share a joke on the channel.
-            Joke are as a bot too fun to be private...
+        async def have_a_nice_day(context) -> None:
+            """User command to share the favorite Tom's sentence on the channel.
+               Joke are as a bot ...too fun to be private...
             """
 
             # Retrieve the user
             mention = context.message.author.mention
             author = self.get_author_id(mention)
 
-            # Log and share the joke
+            # Log and share
             print(f"[!] Tom shared: {author}")
-            await context.send("*And as always, have nice day!*\nhttps://www.youtube.com/watch?v=gpynsA-NZHI")
+
+            channel = config.discord.get_channel(config.DISCORD_CHANNEL_ID)
+            await channel.send("*And as always, have nice day!*\nhttps://www.youtube.com/watch?v=gpynsA-NZHI")
 
         @config.discord.command(name="melvin", pass_contexr=True)
         async def share_melvin(context) -> None:
@@ -119,7 +129,12 @@ class Commands:
             if joke:
                 # Log and share the joke
                 print(f"[!] Melvin shared: {author}")
-                await context.send(f"{joke}")
+                if isinstance(context.channel, DMChannel):
+                    await context.send("Mes blagues sont trop bonnes... Il faut les partager avec l'équipe")
+                    channel = config.discord.get_channel(config.DISCORD_CHANNEL_ID)
+                    await channel.send(f"{mention}\n{joke}")
+                else:
+                    await context.send(f"{joke}")
 
         @config.discord.command(name="philo", pass_contexr=True, aliases=["philosophy"])
         async def share_philo(context) -> None:
@@ -147,14 +162,26 @@ class Commands:
 
         @config.discord.command(name="python", pass_contexr=True)
         async def share_python(context) -> None:
-            """User command to share show python code
+            """User command to share python code
+            """
+
+            await context.send("```python\ndef hello_world():\n\tprint('Hello World!')```")
+
+        @config.discord.command(name="watchmaster", pass_contexr=True)
+        async def select_watchmaster(context) -> None:
+            """User command to select a watchmaster
             """
 
             # Retrieve the user
             mention = context.message.author.mention
             author = self.get_author_id(mention)
 
-            await context.send("def hello_world():\n\tprint('Hello World!')")
+            await context.send(f"<@{author}> OK, je lance mes \ud83c\udfb2 \ud83c\udfb2")
+            watchmaster = config.db.get_random_user()
+            time.sleep(1)
+            await context.send("Et le nouveau watchmaster est ...")
+            time.sleep(1)
+            await context.send(f"<@{watchmaster}>")
 
         @config.discord.event
         async def on_reaction_add(reaction: Reaction, user: Union[User, Member]):
