@@ -273,7 +273,7 @@ class Commands:
                     else:
                         print(f"[!] Missing token for {author}.")
                         await user.send(
-                            f"{mention} OUPS ! Une **erreur** s'est produite: Je n'ai pas trouvé ton token... Tu peux ajouter un token avec la commande **!addtoken**.\nPasse par https://my.becode.org pour le générer"
+                            f"{mention} OUPS ! Une **erreur** s'est produite: Je n'ai pas trouvé ton token... Tu peux ajouter un token avec la commande **!addtoken <yourToken>**.\nPasse par https://my.becode.org pour le générer via ton profil"
                         )
 
         return self
