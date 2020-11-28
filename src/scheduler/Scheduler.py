@@ -14,12 +14,7 @@ class Scheduler:
     def initialize(self):
         # Meetings
         Reminder(
-            "Morning meeting",
-            "mon-fri",
-            8,
-            50,
-            True,
-            [MeetMsg("Daily briefing", 10)]
+            "Morning meeting", "mon-fri", 8, 50, True, [MeetMsg("Daily briefing", 10)]
         )
 
         Reminder(
@@ -93,11 +88,7 @@ class Scheduler:
             17,
             2,
             True,
-            [
-                Message(
-                    "Profitez bien de votre week-end!\nBisous de loin"
-                )
-            ],
+            [Message("Profitez bien de votre week-end!\nBisous de loin")],
         )
 
         Reminder(
