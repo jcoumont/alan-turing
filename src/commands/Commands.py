@@ -18,7 +18,7 @@ class Commands:
         async def on_ready():
             print(f"[+] Discord.py: {config.discord.user} has connected to Discord!")
 
-        @config.discord.command(name="adduser", pass_context=True)
+        @config.discord.command(name="adduser", pass_context=True, aliases=["au"])
         async def add_user(context) -> None:
             """User command to activate mentions on appointment reminders."""
 
@@ -35,7 +35,7 @@ class Commands:
                 f"{mention} Tu n'as plus besoin de ton cerveau, je te mentionnerai à chaque rappel !"
             )
 
-        @config.discord.command(name="removeuser", pass_context=True)
+        @config.discord.command(name="removeuser", pass_context=True, aliases=[ru])
         async def remove_user(context) -> None:
             """User command to deactivate mentions on appointment reminders."""
 
@@ -54,7 +54,7 @@ class Commands:
                 f"{mention} L'oiseau prend son envol ! Je ne te mentionnerai plus dans les rappels."
             )
 
-        @config.discord.command(name="addtoken", pass_contexr=True)
+        @config.discord.command(name="addtoken", pass_contexr=True, aliases=[at])
         async def add_token(context, token: str) -> None:
             """User command to add its token to the database."""
 
@@ -74,7 +74,7 @@ class Commands:
             else:
                 await context.send(f"{mention}, ton token n'est pas valide.")
 
-        @config.discord.command(name="joke", pass_contexr=True)
+        @config.discord.command(name="joke", pass_contexr=True, aliases=["j"])
         async def share_joke(context) -> None:
             """User command to share a joke on the channel.
             Jokes are as a bot ...too fun to keep them private...
@@ -99,7 +99,7 @@ class Commands:
                 else:
                     await context.send(f"{joke}")
 
-        @config.discord.command(name="tom", pass_contexr=True)
+        @config.discord.command(name="tom", pass_contexr=True, aliases=["t"])
         async def have_a_nice_day(context) -> None:
             """User command to share the favorite Tom's sentence on the channel."""
 
@@ -115,7 +115,7 @@ class Commands:
                 "*And as always, have nice day!*\nhttps://www.youtube.com/watch?v=gpynsA-NZHI"
             )
 
-        @config.discord.command(name="melvin", pass_contexr=True)
+        @config.discord.command(name="melvin", pass_contexr=True, aliases=["m"])
         async def share_melvin(context) -> None:
             """User command to share a "mathematician" joke on the channel.
             Melvin's jokes are as a bot ...too fun to keep them private...
@@ -140,7 +140,7 @@ class Commands:
                 else:
                     await context.send(f"{joke}")
 
-        @config.discord.command(name="philo", pass_contexr=True, aliases=["philosophy"])
+        @config.discord.command(name="philo", pass_contexr=True, aliases=["philosophy", "p"])
         async def share_philo(context) -> None:
             """User command to share a joke on the channel.
             Joke are as a bot too fun to be private...
@@ -164,7 +164,7 @@ class Commands:
                 else:  # source unknown
                     await context.send(f"{philo.quote}\n\n**by** *{philo.author}*")
 
-        @config.discord.command(name="python", pass_contexr=True)
+        @config.discord.command(name="python", pass_contexr=True, aliases=["py"])
         async def share_python(context) -> None:
             """User command to share python code"""
 
@@ -172,7 +172,7 @@ class Commands:
                 "Je ne suis pas encore une experte... Sois indulgent\n```python\ndef hello_world():\n\tprint('Hello World!')```"
             )
 
-        @config.discord.command(name="watchmaster", pass_contexr=True)
+        @config.discord.command(name="watchmaster", pass_contexr=True, aliases=["wm"])
         async def select_watchmaster(context) -> None:
             """User command to select a watchmaster"""
 
@@ -189,7 +189,7 @@ class Commands:
             time.sleep(1)
             await context.send(f"<@{watchmaster}>")
 
-        @config.discord.command(name="cheat", pass_contexr=True)
+        @config.discord.command(name="cheat", pass_contexr=True, aliases=["c"])
         async def get_cheat(context, *cheat_q) -> None:
             """User command to execute a cheat search"""
 
