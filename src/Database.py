@@ -27,7 +27,7 @@ class Database:
 
     empty = pd.DataFrame(columns=["user", "notification", "token"])
     empty_philo = pd.DataFrame(columns=["quote", "author", "source"])
-    empty_jokes = pd.DataFrame(columns=["joke"])
+    empty_jokes = pd.DataFrame(columns=["joke", "category"])
 
     def __init__(self) -> None:
         """Small database used to store :
@@ -142,13 +142,17 @@ class Database:
         """Load and return the database from a "bad_jokes.csv" file."""
         return pd.read_csv(DB_JOKES_PATH)
 
-    def get_random_joke(self):
+    def get_random_joke(self, category: str = None):
         if self.db_jokes is None or len(self.db_jokes.index) == 0:
             return None
         else:
-            r_int = random.randint(0, len(self.db_jokes.index))
-            idx = self.db_jokes.index[r_int]
-            return self.db_jokes.loc[idx, "joke"]
+            if category:
+                jokes = self.db_jokes[self.db_jokes.category == category]
+            else:
+                jokes = self.db_jokes
+            r_int = random.randint(0, len(jokes.index))
+            idx = jokes.index[r_int]
+            return jokes.loc[idx, "joke"]
 
     def get_random_philo(self):
         if self.db_philo is None or len(self.db_philo.index) == 0:
