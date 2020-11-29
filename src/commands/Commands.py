@@ -180,14 +180,15 @@ class Commands:
             mention = context.message.author.mention
             author = self.get_author_id(mention)
 
-            await context.send(
-                f"<@{author}> OK, je lance mes \ud83c\udfb2 \ud83c\udfb2"
-            )
-            watchmaster = config.db.get_random_user()
-            time.sleep(1)
-            await context.send("Et le nouveau watchmaster est ...")
-            time.sleep(1)
-            await context.send(f"<@{watchmaster}>")
+            async with context.typing():
+                await context.send(
+                    f"<@{author}> OK, je lance mes \ud83c\udfb2 \ud83c\udfb2"
+                )
+                watchmaster = config.db.get_random_user()
+                time.sleep(1)
+                await context.send("Et le nouveau watchmaster est ...")
+                time.sleep(1)
+                await context.send(f"<@{watchmaster}>")
 
         @config.discord.command(name="cheat", pass_contexr=True, aliases=["c"])
         async def get_cheat(context, *cheat_q) -> None:
@@ -207,6 +208,7 @@ class Commands:
             resp = soup.find_all("pre")[0].text
             max_len = 2000 - 10 - len(url)
             resp = (resp[:max_len] + "..") if len(resp) > max_len else resp
+
             if isinstance(context.channel, DMChannel):
                 await context.send(f"```{resp})```\n{url}")
             else:
