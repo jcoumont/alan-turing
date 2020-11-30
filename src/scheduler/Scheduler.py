@@ -29,9 +29,9 @@ class Scheduler:
         # Attendances
         Reminder(
             "Pointage 9h - MyBecode",
-            "sat",
-            00,
-            7,
+            "mon-fri",
+            8,
+            50,
             True,
             [AttendanceMsg(Periods.MORNING, Loc.HOME)],
         )
@@ -58,7 +58,7 @@ class Scheduler:
             "Pointage 17h - MyBecode",
             "mon-fri",
             17,
-            1,
+            0,
             True,
             [AttendanceMsg(Periods.EVENING, Loc.HOME)],
         )
